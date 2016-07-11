@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+        }
+
+        li {
+            list-style: none;
+        }
+
+        a {
+            text-decoration: none;
+            color: #666666;
+            display: block;
+            height: 30px;
+            width: 50px;
+            border: 1px solid #761c19;
+            line-height: 30px;
+            text-align: center;
+            font-size: 12px;
+        }
+
+        a:hover {
+            color: white;
+            background-color: #761c19;
+        }
+
+        .container {
+            width: 70%;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        p {
+            height: 498px;
+            width: 100%;
+            border: 1px solid #761c19;
+        }
+
+        ul {
+            position: fixed;
+            top: 30%;
+            left: 15%;
+        }
+
+    </style>
+</head>
+<body>
+<div class="container">
+    <p>1F</p>
+
+    <p>2F</p>
+
+    <p>3F</p>
+
+    <p>4F</p>
+
+    <p>5F</p>
+
+    <p>6F</p>
+
+    <p>7F</p>
+
+    <p>8F</p>
+
+    <p>9F</p>
+
+    <p>10F</p>
+
+    <p></p>
+    <ul style="display: none" id="floor-ul">
+        <li><a href="javascript:;">1F</a></li>
+        <li><a href="javascript:;">2F</a></li>
+        <li><a href="javascript:;">3F</a></li>
+        <li><a href="javascript:;">4F</a></li>
+        <li><a href="javascript:;">5F</a></li>
+        <li><a href="javascript:;">6F</a></li>
+        <li><a href="javascript:;">7F</a></li>
+        <li><a href="javascript:;">8F</a></li>
+        <li><a href="javascript:;">9F</a></li>
+        <li><a href="javascript:;">10F</a></li>
+    </ul>
+</div>
+<script>
+    var height = document.documentElement.clientHeight;
+    var ul = document.getElementsByTagName("ul").item(0);
+    var obj = {
+        F1: "首页",
+        F2: "服饰",
+        F3: "箱包",
+        F4: "鞋子",
+        F5: "首饰",
+        F6: "家具",
+        F7: "数码",
+        F8: "电器",
+        F9: "日常",
+        F10: "化妆"
+    };
+
+    document.body.onscroll = function () {
+        console.log(document.body.scrollTop);//实际滚动大小
+        console.log(document.documentElement.scrollTop);//0
+        var top = document.body.scrollTop || document.documentElement.scrollTop;//必须放在这里
+        if (top >= height) {
+            ul.style.display = "block";
+        } else {
+            ul.style.display = "none";
+        }
+        console.log(top);
+    };
+    var linkA = document.getElementById("floor-ul").getElementsByTagName("a");
+    //    console.log(Object.keys(obj)[0]);
+    //    console.log(linkA[0]);
+    var p = document.getElementsByTagName("p");
+    for (var x = 0; x < linkA.length; x++) {
+        linkA[x].innerHTML = Object.keys(obj)[x];
+        linkA[x].value = x;
+        if(typeof window.addEventListener!="undefined") {
+            linkA[x].addEventListener("mouseover",floorText , false);
+        }else{
+            console.log("0000000");
+            linkA[x].attachEvent("onmouseover",floorText );
+        }
+    }
+    for (var i = 0; i < linkA.length; i++) {
+        linkA[i].value = i;
+        if(typeof window.addEventListener!="undefined"){
+            linkA[i].addEventListener("click",floor , 30);
+        }else{
+            console.log(1111111);
+            linkA[i].attachEvent("onclick",floor );
+        }
+    }
+
+    function floorText() {
+        for (var y = 0; y < linkA.length; y++) {
+            linkA[y].innerHTML = Object.keys(obj)[y];
+        }
+        linkA[this.value].innerHTML = obj[Object.keys(obj)[this.value]];
+    }
+    function floor() {
+        ul.style.display = "none";
+        n = this.value;
+        timer = setInterval(function () {
+            if (document.body.scrollTop > (p[n].offsetHeight) * n) {
+
+                var top = document.body.scrollTop || document.documentElement.scrollTop - (p[n].offsetHeight) * n - 1;
+                document.body.scrollTop = document.body.scrollTop - top / 5;
+                console.log(top);
+            } else {
+                var bott = (p[n].offsetHeight) * n - document.body.scrollTop;
+                document.body.scrollTop = document.body.scrollTop + bott / 5 + 4;
+                console.log(bott);
+            }
+            if (bott == 0 || top == 0) {
+                clearInterval(timer);
+                ul.style.display = "block";
+            }
+        })
+    }
+</script>
+</body>
+</html>
